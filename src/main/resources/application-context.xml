@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
+
+
     <!--加载配置文件-->
     <bean id="propertyConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -12,12 +14,26 @@
     </property>
     </bean>
   <!--  配置数据连接池-->
-    <bean id="datasSource" class="com.alibaba.druid.pool.DruidDataSource">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driver" value="${spring.datasource.driver}"/>
         <property name="url" value="${spring.datasource.url}"/>
         <property name="username" value="${spring.datasource.username}"/>
         <property name="password" value="${spring.datasource.password}"/>
-
+    </bean>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>com.hzm.amoy.core.entity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">${spring.hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${spring.hibernate.show_sql}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${spring.hibernate.hbm2ddl.auto}</prop>
+            </props>
+        </property>
     </bean>
 
 
